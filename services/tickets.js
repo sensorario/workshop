@@ -1,10 +1,33 @@
 'use strict'
 
+const ticketSchema = {
+  type: 'object',
+  properties: {
+    _id: {
+      type: 'string'
+    },
+    title: {
+      type: 'string'
+    },
+    body: {
+      type: 'string'
+    }
+  },
+  required: ['title', 'body']
+}
+
 module.exports = async function (app, opts) {
   const tickets = app.mongo.db.collection('tickets')
   const { ObjectId } = app.mongo
 
-  app.post('/', async function (req, reply) {
+  app.post('/', {
+    schema: {
+      body: ticketSchema,
+      response: {
+        '2xx': ticketSchema
+      }
+    }
+  }, async function (req, reply) {
 
     const data = await tickets.insertOne(req.body)
 

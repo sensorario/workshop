@@ -112,3 +112,29 @@ test('create and get all', async (t) => {
     }]
   })
 })
+
+test('cant create tickets without title', async (t) => {
+  const url = `/tickets`
+  const app = build(t)
+  const response = await app.inject({
+    method: 'POST',
+    url: '/tickets',
+    body: {
+      body: 'this is a long body'
+    }
+  })
+  t.equal(response.statusCode, 400) // Created
+})
+
+test('cant create tickets without body', async (t) => {
+  const url = `/tickets`
+  const app = build(t)
+  const response = await app.inject({
+    method: 'POST',
+    url: '/tickets',
+    body: {
+      title: 'this is a long body'
+    }
+  })
+  t.equal(response.statusCode, 400) // Created
+})
