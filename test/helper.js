@@ -42,8 +42,13 @@ function config () {
 
 function build (t) {
   const app = Fastify()
+
+  // registro un nuovo plugin
+  // configurato per lavorare con mongo
   app.register(fp(App), config())
+
   t.tearDown(app.close.bind(app))
+
   return app
 }
 

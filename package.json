@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "mongo": "docker run -p 27017:27017 mongo:4.0.3",
-    "test": "tap test/*.test.js test/*/*.test.js test/*/*/*.test.js",
+    "test": "tap -Rspec test/*.test.js test/*/*.test.js test/*/*/*.test.js",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -l info -P app.js"
   },
