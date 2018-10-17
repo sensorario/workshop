@@ -42,6 +42,7 @@ module.exports = async function (app, opts) {
     }, req.body)
   })
 
+  // @todo add validation within a pattern
   app.get('/:id', async function (req, reply) {
     const id = req.params.id
 
