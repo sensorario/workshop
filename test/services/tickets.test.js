@@ -1,9 +1,9 @@
 'use strict'
 
 const { test } = require('tap')
-const { build } = require('../helper')
+const { build, testWithLogin } = require('../helper')
 
-test('create and get ticket', async (t) => {
+testWithLogin('create and get ticket', async (t, inject) => {
   const savedTitle = 'A support ticket';
   const savedBody = 'this is a long body';
   const jsonData = {
@@ -11,7 +11,7 @@ test('create and get ticket', async (t) => {
     body: savedBody,
   };
   const app = build(t)
-  const res1 = await app.inject({
+  const res1 = await inject({
     method: 'POST',
     url: '/tickets',
     body: jsonData
@@ -34,7 +34,7 @@ test('create and get ticket', async (t) => {
 
   t.equal(res1.headers.location, url)
 
-  const res2 = await app.inject({
+  const res2 = await inject({
     method: 'GET',
     url
   })
@@ -52,10 +52,10 @@ test('create and get ticket', async (t) => {
   })
 })
 
-test('get missing id', async (t) => {
+testWithLogin('get missing id', async (t, inject) => {
   const url = `/tickets/5bc707b93db50705356c53c4`
   const app = build(t)
-  const res2 = await app.inject({
+  const res2 = await inject({
     method: 'GET',
     url
   })
@@ -65,12 +65,12 @@ test('get missing id', async (t) => {
   })
 })
 
-test('create and get all', async (t) => {
+testWithLogin('create and get all', async (t, inject) => {
   // tiro su l'applicazione
   const app = build(t)
 
   // injecto la POST a /tickets
-  const res1 = await app.inject({
+  const res1 = await inject({
     method: 'POST',
     url: '/tickets',
     body: {
@@ -80,7 +80,7 @@ test('create and get all', async (t) => {
   })
 
   // inserisco un secondo ticket
-  const res2 = await app.inject({
+  const res2 = await inject({
     method: 'POST',
     url: '/tickets',
     body: {
@@ -90,7 +90,7 @@ test('create and get all', async (t) => {
   })
 
   // recupero tutti i tickets
-  const resAll = await app.inject({
+  const resAll = await inject({
     method: 'GET',
     url: '/tickets'
   })
@@ -113,10 +113,10 @@ test('create and get all', async (t) => {
   })
 })
 
-test('cant create tickets without title', async (t) => {
+testWithLogin('cant create tickets without title', async (t, inject) => {
   const url = `/tickets`
   const app = build(t)
-  const response = await app.inject({
+  const response = await inject({
     method: 'POST',
     url: '/tickets',
     body: {
@@ -126,10 +126,10 @@ test('cant create tickets without title', async (t) => {
   t.equal(response.statusCode, 400) // Created
 })
 
-test('cant create tickets without body', async (t) => {
+testWithLogin('cant create tickets without body', async (t, inject) => {
   const url = `/tickets`
   const app = build(t)
-  const response = await app.inject({
+  const response = await inject({
     method: 'POST',
     url: '/tickets',
     body: {

@@ -20,6 +20,14 @@ module.exports = async function (app, opts) {
   const tickets = app.mongo.db.collection('tickets')
   const { ObjectId } = app.mongo
 
+  app.addHook("preHandler", async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      reply.send(err)
+    }
+  })
+
   app.post('/', {
     schema: {
       body: ticketSchema,
