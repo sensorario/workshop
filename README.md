@@ -1,4 +1,4 @@
 # workshop
 
- - npm run docker
+ - npm run mongo
  - npm test
